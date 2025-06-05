@@ -57,6 +57,9 @@ function executeCommands(conn: Client, commands: string[]) {
       }).stderr.on('data', (data) => {
         console.error(`STDERR: ${data}`);
       });
+      process.stdin.on('data', (data:any) => {
+        stream.write(data)
+      })
     });
   };
 
