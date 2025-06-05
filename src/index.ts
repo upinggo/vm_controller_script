@@ -16,7 +16,7 @@ const argv = minimist(process.argv.slice(2));
 const branchName = argv.b || argv._[0] || process.env.BRANCH || 'main';
 console.log(`Branch name: ${branchName}`);
 const commands = [
-  `cd ${process.env.REPO_PATH} && git checkout origin/${branchName} && git fetch --all && git reset --hard origin/${branchName}`,
+  `cd ${process.env.REPO_PATH} && git fetch --all && git checkout ${branchName} && git reset --hard origin/${branchName}`,
   `npm --prefix ${process.env.REPO_PATH} install`,
   `npm --prefix ${process.env.REPO_PATH} run deploy:umbrella ${process.env.HANA_CONTAINER} ${process.env.OPTIONS ? '-- ' + process.env.OPTIONS : ''}`,
 ];
