@@ -54,12 +54,11 @@ function executeCommands(conn: Client, commands: string[]) {
         nextCommand();
       }).on('data', (data: any) => {
         console.log(`STDOUT: ${data}`);
+      }).stdin.on('data', (data: any) => {
+        stream.write(data);
       }).stderr.on('data', (data) => {
         console.error(`STDERR: ${data}`);
       });
-      process.stdin.on('data', (data:any) => {
-        stream.write(data)
-      })
     });
   };
 
