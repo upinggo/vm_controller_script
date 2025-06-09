@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import minimist from "minimist";
 
 dotenv.config();
-const cfLoginCommand = "cf login --sso -a https://api.cf.eu20.hana.ondemand.com -o sfm-btp-dev-services -s schema";
+const cfLoginCommand = "cf login --sso -a https://api.cf.eu20.hana.ondemand.com -o climate-21-dev -s schema";
 
 const connectionConfig = {
   host: process.env.SSH_HOST,
@@ -18,8 +18,8 @@ const argv = minimist(process.argv.slice(2));
 const branchName = argv.b || argv._[0] || process.env.BRANCH || 'main';
 console.log(`Branch name: ${branchName}`);
 const commands = [
-  // `cd ${process.env.REPO_PATH} && git fetch --all && git checkout ${branchName} && git reset --hard origin/${branchName}`,
-  // `npm --prefix ${process.env.REPO_PATH} install`,
+  `cd ${process.env.REPO_PATH} && git fetch --all && git checkout ${branchName} && git reset --hard origin/${branchName}`,
+  `npm --prefix ${process.env.REPO_PATH} install`,
   `npm --prefix ${process.env.REPO_PATH} run deploy:umbrella ${process.env.HANA_CONTAINER} ${process.env.OPTIONS ? '-- ' + process.env.OPTIONS : ''}`,
 ];
 const conn = new Client();
@@ -32,7 +32,7 @@ conn.on('ready', () => {
       execSync("cf oauth-token", { stdio: "ignore" });
   } catch (error) {
       try {
-          execSync(cfLoginCommand, { stdio: "inherit" });
+          execSync(process.env.CFLoginCommand||cfLoginCommand, { stdio: "inherit" });
           // Re-check login status after attempting login
           execSync("cf oauth-token", { stdio: "ignore" });
       } catch (loginError) {
