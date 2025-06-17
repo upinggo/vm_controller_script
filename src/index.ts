@@ -54,8 +54,6 @@ function connectCFShell(conn: Client): Promise<void> {
                     stream.write(inputBuffer + '\n');
                     inputBuffer = '';
                     stream.pipe(stream.stdout); // Pipe stream output to stdout
-                    resolve();
-                    stream.close()
                   } else {
                     inputBuffer += input;
                   }
@@ -63,7 +61,7 @@ function connectCFShell(conn: Client): Promise<void> {
 
 
               });
-            } else if (data.toString().includes('bearer')) {
+            } else if (data.toString().includes('OK') || data.toString().includes('bearer')) {
               console.log('Already logged in to Cloud Foundry');
               resolve();
               stream.close();
