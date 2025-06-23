@@ -49,7 +49,7 @@ function connectCFShell(conn: Client): Promise<void> {
                 process.stdin.on('data', (data: Buffer) => {
                   const input = data.toString();
                   // Check for termination conditions
-                  if (input === '\u0004') { // Ctrl+D
+                  if (input === '\\n') { // \n
                     console.log(`Sending command: ${inputBuffer}`);
                     stream.write(inputBuffer + '\n');
                     inputBuffer = '';
